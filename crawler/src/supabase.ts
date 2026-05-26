@@ -1,14 +1,10 @@
 import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+const supabaseUrl = 'https://ynwltwklsphquttgapqh.supabase.co';
+const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inlud2x0d2tsc3BocXV0dGdhcHFoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk4MDQxMjAsImV4cCI6MjA5NTM4MDEyMH0.tBnETGs-5rOvP5vQoXWg0DtbkWI2ZAxDpBea8vXY1VE';
+const serviceRoleKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inlud2x0d2tsc3BocXV0dGdhcHFoIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3OTgwNDEyMCwiZXhwIjoyMDk1MzgwMTIwfQ.5nJktdh27UR0WA88z_rsyz4yfXBFLjv5pBQvIGLmKlM';
 
-if (!supabaseUrl || !supabaseKey) {
-  console.error('Missing Supabase environment variables');
-  process.exit(1);
-}
-
-export const supabase = createClient(supabaseUrl, supabaseKey, {
+export const supabase = createClient(supabaseUrl, serviceRoleKey, {
   auth: { autoRefreshToken: false, persistSession: false },
 });
 
@@ -31,7 +27,6 @@ export interface RawRecruitment {
 }
 
 export async function upsertRecruitment(item: RawRecruitment) {
-  // Find or create university
   let universityId: string | null = null;
   if (item.university_name) {
     const { data: existing } = await supabase
@@ -56,7 +51,6 @@ export async function upsertRecruitment(item: RawRecruitment) {
     }
   }
 
-  // Check if already exists by URL
   const { data: existing } = await supabase
     .from('recruitments')
     .select('id, notified')
@@ -64,7 +58,6 @@ export async function upsertRecruitment(item: RawRecruitment) {
     .maybeSingle();
 
   if (existing) {
-    // Update supplementary info (don't overwrite existing values with null)
     const updateData: Record<string, any> = {};
     if (item.education_requirement) updateData.education_requirement = item.education_requirement;
     if (item.cooperation_type) updateData.cooperation_type = item.cooperation_type;
@@ -80,7 +73,6 @@ export async function upsertRecruitment(item: RawRecruitment) {
     return { isNew: false, id: existing.id };
   }
 
-  // Insert new
   const { data: inserted } = await supabase
     .from('recruitments')
     .insert({
@@ -108,7 +100,6 @@ export async function upsertRecruitment(item: RawRecruitment) {
 }
 
 export async function sendNotifications(recruitmentId: string, title: string) {
-  // Get all users who have email notifications enabled (we'll just create in-app notifications for all users)
   const { data: users } = await supabase
     .from('user_filters')
     .select('user_id, notify_in_app, notify_email');
