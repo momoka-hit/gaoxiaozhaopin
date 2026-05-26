@@ -1,0 +1,18 @@
+{
+  "name": "gaoxiaozhaopin-crawler",
+  "version": "1.0.0",
+  "description": "高校招聘信息爬虫",
+  "scripts": {
+    "crawl": "npx tsx src/index.ts",
+    "notify": "npx tsx src/notify-email.ts"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.106.2",
+    "axios": "^1.16.1",
+    "cheerio": "^1.2.0"
+  },
+  "devDependencies": {
+    "resend": "^6.12.4",
+    "tsx": "^4.22.3"
+  }
+}
