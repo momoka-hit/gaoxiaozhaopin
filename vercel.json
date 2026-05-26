@@ -1,11 +1,4 @@
 {
   "version": 2,
-  "buildCommand": "npm run build",
-  "installCommand": "npm install",
-  "framework": "nextjs",
-  "functions": {
-    "api/**/*": {
-      "maxDuration": 10
-    }
-  }
+  "framework": "nextjs"
 }
