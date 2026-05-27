@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
-import { Bell, Filter, Home, LogOut, Menu, User, X, Shield } from 'lucide-react';
+import { Bell, Filter, Home, LogOut, Menu, User, X, Shield, Sparkles } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
 export default function Navbar() {
@@ -67,9 +67,10 @@ export default function Navbar() {
   }
 
   return (
-    <nav className="sticky top-0 z-50 bg-white border-b border-[var(--border)]">
+    <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-lg border-b border-gray-200/60">
       <div className="container-main flex items-center justify-between h-14">
-        <Link href="/" className="font-bold text-lg text-[var(--primary)]">
+        <Link href="/" className="font-bold text-lg text-indigo-600 flex items-center gap-1.5">
+          <Sparkles size={18} />
           高校招聘通
         </Link>
 
@@ -79,16 +80,16 @@ export default function Navbar() {
             <Link
               key={link.href}
               href={link.href}
-              className={`relative flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm transition-colors ${
+              className={`relative flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                 pathname === link.href
-                  ? 'text-[var(--primary)] bg-blue-50'
-                  : 'text-[var(--muted)] hover:text-[var(--foreground)] hover:bg-gray-50'
+                  ? 'text-indigo-700 bg-indigo-50'
+                  : 'text-gray-500 hover:text-gray-700 hover:bg-gray-100'
               }`}
             >
               <link.icon size={16} />
               {link.label}
               {link.badge && link.badge > 0 && (
-                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] min-w-[16px] h-4 flex items-center justify-center rounded-full px-1">
+                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] min-w-[16px] h-4 flex items-center justify-center rounded-full px-1 font-bold">
                   {link.badge > 99 ? '99+' : link.badge}
                 </span>
               )}
@@ -96,7 +97,7 @@ export default function Navbar() {
           ))}
           <button
             onClick={handleLogout}
-            className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm text-[var(--muted)] hover:text-[var(--foreground)] hover:bg-gray-50 ml-2"
+            className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm text-gray-500 hover:text-gray-700 hover:bg-gray-100 ml-2 transition-colors"
           >
             <LogOut size={16} />
             退出
@@ -105,7 +106,7 @@ export default function Navbar() {
 
         {/* Mobile hamburger */}
         <button
-          className="sm:hidden p-2 rounded-lg hover:bg-gray-50"
+          className="sm:hidden p-2 rounded-lg hover:bg-gray-100 text-gray-600"
           onClick={() => setMenuOpen(!menuOpen)}
         >
           {menuOpen ? <X size={20} /> : <Menu size={20} />}
@@ -114,23 +115,23 @@ export default function Navbar() {
 
       {/* Mobile menu */}
       {menuOpen && (
-        <div className="sm:hidden border-t border-[var(--border)] bg-white">
+        <div className="sm:hidden border-t border-gray-200/60 bg-white/95 backdrop-blur-lg">
           <div className="container-main py-2 space-y-1">
             {navLinks.map(link => (
               <Link
                 key={link.href}
                 href={link.href}
                 onClick={() => setMenuOpen(false)}
-                className={`flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm ${
+                className={`flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm font-medium ${
                   pathname === link.href
-                    ? 'text-[var(--primary)] bg-blue-50'
-                    : 'text-[var(--muted)]'
+                    ? 'text-indigo-700 bg-indigo-50'
+                    : 'text-gray-500'
                 }`}
               >
                 <link.icon size={16} />
                 {link.label}
                 {link.badge && link.badge > 0 && (
-                  <span className="bg-red-500 text-white text-[10px] px-1.5 py-0.5 rounded-full">
+                  <span className="bg-red-500 text-white text-[10px] px-1.5 py-0.5 rounded-full font-bold">
                     {link.badge}
                   </span>
                 )}
@@ -138,7 +139,7 @@ export default function Navbar() {
             ))}
             <button
               onClick={handleLogout}
-              className="flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm text-[var(--muted)] w-full"
+              className="flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm text-gray-500 w-full hover:bg-gray-50 transition-colors"
             >
               <LogOut size={16} />
               退出

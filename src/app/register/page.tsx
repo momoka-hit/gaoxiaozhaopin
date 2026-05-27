@@ -112,126 +112,131 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
-      <div className="w-full max-w-sm">
-        <div className="text-center mb-8">
-          <h1 className="text-2xl font-bold text-[var(--primary)]">高校招聘通</h1>
-          <p className="text-[var(--muted)] mt-1 text-sm">高校行政辅导员招聘信息平台</p>
+    <div className="min-h-screen flex flex-col">
+      {/* Gradient header */}
+      <div className="bg-gradient-to-br from-indigo-600 to-indigo-800 text-white">
+        <div className="container-main py-12 pb-16 text-center">
+          <h1 className="text-2xl font-bold tracking-tight">高校招聘通</h1>
+          <p className="text-indigo-200 text-sm mt-1">高校行政辅导员招聘信息平台</p>
         </div>
+      </div>
 
-        {step === 'invite' ? (
-          <div className="card space-y-4">
-            <h2 className="text-lg font-semibold">输入邀请码</h2>
+      <div className="container-main -mt-8 relative z-10">
+        <div className="w-full max-w-sm mx-auto">
+          {step === 'invite' ? (
+            <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 space-y-4">
+              <h2 className="text-lg font-semibold text-gray-800">输入邀请码</h2>
 
-            {error && (
-              <div className="flex items-center gap-2 text-sm text-red-600 bg-red-50 px-3 py-2 rounded-lg">
-                <AlertCircle size={14} />
-                {error}
-              </div>
-            )}
-
-            <div>
-              <label className="block text-sm font-medium mb-1">邀请码</label>
-              <input
-                type="text"
-                className="input text-center text-lg tracking-widest"
-                placeholder="请输入邀请码"
-                value={inviteCode}
-                onChange={e => setInviteCode(e.target.value.toUpperCase())}
-                required
-              />
-            </div>
-
-            <button
-              type="button"
-              className="btn btn-primary w-full"
-              onClick={verifyInviteCode}
-              disabled={loading || !inviteCode.trim()}
-            >
-              {loading ? '验证中...' : '验证邀请码'}
-            </button>
-
-            <p className="text-sm text-center text-[var(--muted)]">
-              已有账号？
-              <Link href="/login" className="text-[var(--primary)] hover:underline ml-1">
-                去登录
-              </Link>
-            </p>
-          </div>
-        ) : (
-          <form onSubmit={handleRegister} className="card space-y-4">
-            <div className="flex items-center gap-2 text-green-600">
-              <CheckCircle size={16} />
-              <span className="text-sm font-medium">邀请码验证通过</span>
-            </div>
-
-            <h2 className="text-lg font-semibold">设置账号</h2>
-
-            {error && (
-              <div className="flex items-center gap-2 text-sm text-red-600 bg-red-50 px-3 py-2 rounded-lg">
-                <AlertCircle size={14} />
-                {error}
-              </div>
-            )}
-
-            <div>
-              <label className="block text-sm font-medium mb-1">昵称（可选）</label>
-              <input
-                type="text"
-                className="input"
-                placeholder="如何称呼您"
-                value={nickname}
-                onChange={e => setNickname(e.target.value)}
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium mb-1">邮箱</label>
-              <input
-                type="email"
-                className="input"
-                placeholder="your@email.com"
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-                required
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium mb-1">密码</label>
-              <input
-                type="password"
-                className="input"
-                placeholder="至少6位"
-                value={password}
-                onChange={e => setPassword(e.target.value)}
-                required
-                minLength={6}
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium mb-1">确认密码</label>
-              <input
-                type="password"
-                className="input"
-                placeholder="再次输入密码"
-                value={confirmPassword}
-                onChange={e => setConfirmPassword(e.target.value)}
-                required
-              />
-            </div>
-
-            <button type="submit" className="btn btn-primary w-full" disabled={loading}>
-              {loading ? (
-                <span className="animate-spin inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full" />
-              ) : (
-                <UserPlus size={16} />
+              {error && (
+                <div className="flex items-center gap-2 text-sm text-red-600 bg-red-50 px-3 py-2 rounded-lg">
+                  <AlertCircle size={14} />
+                  {error}
+                </div>
               )}
-              {loading ? '注册中...' : '注册'}
-            </button>
-          </form>
-        )}
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">邀请码</label>
+                <input
+                  type="text"
+                  className="input text-center text-lg tracking-widest"
+                  placeholder="请输入邀请码"
+                  value={inviteCode}
+                  onChange={e => setInviteCode(e.target.value.toUpperCase())}
+                  required
+                />
+              </div>
+
+              <button
+                type="button"
+                className="btn btn-primary w-full"
+                onClick={verifyInviteCode}
+                disabled={loading || !inviteCode.trim()}
+              >
+                {loading ? '验证中...' : '验证邀请码'}
+              </button>
+
+              <p className="text-sm text-center text-gray-400">
+                已有账号？
+                <Link href="/login" className="text-indigo-600 hover:text-indigo-800 font-medium ml-1">
+                  去登录
+                </Link>
+              </p>
+            </div>
+          ) : (
+            <form onSubmit={handleRegister} className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 space-y-4">
+              <div className="flex items-center gap-2 text-green-600 bg-green-50 px-3 py-2 rounded-lg">
+                <CheckCircle size={16} />
+                <span className="text-sm font-medium">邀请码验证通过</span>
+              </div>
+
+              <h2 className="text-lg font-semibold text-gray-800">设置账号</h2>
+
+              {error && (
+                <div className="flex items-center gap-2 text-sm text-red-600 bg-red-50 px-3 py-2 rounded-lg">
+                  <AlertCircle size={14} />
+                  {error}
+                </div>
+              )}
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">昵称（可选）</label>
+                <input
+                  type="text"
+                  className="input"
+                  placeholder="如何称呼您"
+                  value={nickname}
+                  onChange={e => setNickname(e.target.value)}
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">邮箱</label>
+                <input
+                  type="email"
+                  className="input"
+                  placeholder="your@email.com"
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">密码</label>
+                <input
+                  type="password"
+                  className="input"
+                  placeholder="至少6位"
+                  value={password}
+                  onChange={e => setPassword(e.target.value)}
+                  required
+                  minLength={6}
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">确认密码</label>
+                <input
+                  type="password"
+                  className="input"
+                  placeholder="再次输入密码"
+                  value={confirmPassword}
+                  onChange={e => setConfirmPassword(e.target.value)}
+                  required
+                />
+              </div>
+
+              <button type="submit" className="btn btn-primary w-full" disabled={loading}>
+                {loading ? (
+                  <span className="animate-spin inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full" />
+                ) : (
+                  <UserPlus size={16} />
+                )}
+                {loading ? '注册中...' : '注册'}
+              </button>
+            </form>
+          )}
+        </div>
       </div>
     </div>
   );

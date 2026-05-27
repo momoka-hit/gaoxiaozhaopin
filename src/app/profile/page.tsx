@@ -90,141 +90,148 @@ export default function ProfilePage() {
   if (!filters) return null;
 
   return (
-    <div className="container-main py-4 pb-20 space-y-4">
-      <h1 className="text-lg font-bold flex items-center gap-2">
-        <User size={18} />
-        个人设置
-      </h1>
-
-      {/* Profile info */}
-      <div className="card space-y-3">
-        <h2 className="text-sm font-semibold text-[var(--muted)]">账号信息</h2>
-        <div className="flex items-center gap-3 text-sm">
-          <Mail size={14} className="text-[var(--muted)]" />
-          {profile?.email}
+    <div className="pb-24">
+      {/* Gradient header */}
+      <div className="bg-gradient-to-br from-indigo-600 to-indigo-800 text-white">
+        <div className="container-main py-6 pb-8">
+          <h1 className="text-lg font-bold flex items-center gap-2">
+            <User size={18} />
+            个人设置
+          </h1>
         </div>
+      </div>
+
+      <div className="container-main -mt-4 relative z-10 space-y-3">
+        {/* Profile info */}
+        <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-5 space-y-3">
+          <h2 className="text-xs font-semibold text-gray-400 uppercase tracking-wider">账号信息</h2>
+          <div className="flex items-center gap-3 text-sm text-gray-600">
+            <Mail size={14} className="text-gray-400" />
+            {profile?.email}
+          </div>
+          <div className="flex items-center gap-2">
+            <User size={14} className="text-gray-400" />
+            <input
+              type="text"
+              className="input flex-1"
+              placeholder="设置昵称"
+              value={nickname}
+              onChange={e => setNickname(e.target.value)}
+            />
+          </div>
+        </div>
+
+        {/* Filter preferences */}
+        <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-5 space-y-4">
+          <h2 className="text-xs font-semibold text-gray-400 uppercase tracking-wider">筛选偏好</h2>
+
+          <FilterGroup label="关注省份">
+            <div className="flex flex-wrap gap-1.5">
+              {PROVINCES.map(p => (
+                <ChipBtn
+                  key={p}
+                  active={filters.provinces.includes(p)}
+                  onClick={() => toggleArrayFilter('provinces', p)}
+                >{p}</ChipBtn>
+              ))}
+            </div>
+          </FilterGroup>
+
+          <FilterGroup label="学历要求">
+            <div className="flex flex-wrap gap-1.5">
+              {EDUCATION_LEVELS.map(e => (
+                <ChipBtn
+                  key={e}
+                  active={filters.education.includes(e)}
+                  onClick={() => toggleArrayFilter('education', e)}
+                >{e}</ChipBtn>
+              ))}
+            </div>
+          </FilterGroup>
+
+          <FilterGroup label="办学性质">
+            <div className="flex flex-wrap gap-1.5">
+              {UNIVERSITY_TYPES.map(t => (
+                <ChipBtn
+                  key={t}
+                  active={filters.university_types.includes(t)}
+                  onClick={() => toggleArrayFilter('university_types', t)}
+                >{t}</ChipBtn>
+              ))}
+            </div>
+          </FilterGroup>
+
+          <FilterGroup label="院校层次">
+            <div className="flex flex-wrap gap-1.5">
+              {UNIVERSITY_LEVELS.map(l => (
+                <ChipBtn
+                  key={l}
+                  active={filters.university_levels.includes(l)}
+                  onClick={() => toggleArrayFilter('university_levels', l)}
+                >{l}</ChipBtn>
+              ))}
+            </div>
+          </FilterGroup>
+
+          <FilterGroup label="聘用方式">
+            <div className="flex flex-wrap gap-1.5">
+              {COOPERATION_TYPES.map(c => (
+                <ChipBtn
+                  key={c}
+                  active={filters.cooperation_types.includes(c)}
+                  onClick={() => toggleArrayFilter('cooperation_types', c)}
+                >{c}</ChipBtn>
+              ))}
+            </div>
+          </FilterGroup>
+        </div>
+
+        {/* Notification preferences */}
+        <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-5 space-y-3">
+          <h2 className="text-xs font-semibold text-gray-400 uppercase tracking-wider">通知设置</h2>
+
+          <label className="flex items-center justify-between text-sm py-1">
+            <div className="flex items-center gap-2 text-gray-600">
+              <Mail size={14} className="text-gray-400" />
+              邮件通知
+            </div>
+            <input
+              type="checkbox"
+              className="w-4 h-4 rounded accent-indigo-600"
+              checked={filters.notify_email}
+              onChange={e => setFilters({ ...filters, notify_email: e.target.checked })}
+            />
+          </label>
+
+          <label className="flex items-center justify-between text-sm py-1">
+            <div className="flex items-center gap-2 text-gray-600">
+              <Bell size={14} className="text-gray-400" />
+              站内通知
+            </div>
+            <input
+              type="checkbox"
+              className="w-4 h-4 rounded accent-indigo-600"
+              checked={filters.notify_in_app}
+              onChange={e => setFilters({ ...filters, notify_in_app: e.target.checked })}
+            />
+          </label>
+        </div>
+
+        {/* Save & Logout */}
         <div className="flex items-center gap-2">
-          <User size={14} className="text-[var(--muted)]" />
-          <input
-            type="text"
-            className="input flex-1"
-            placeholder="设置昵称"
-            value={nickname}
-            onChange={e => setNickname(e.target.value)}
-          />
+          <button className="btn btn-primary flex-1" onClick={saveFilters} disabled={saving}>
+            {saving ? (
+              <RefreshCw size={14} className="animate-spin" />
+            ) : (
+              <Save size={14} />
+            )}
+            {saving ? '保存中...' : saved ? '已保存' : '保存设置'}
+          </button>
+          <button className="btn btn-secondary" onClick={handleLogout}>
+            <LogOut size={14} />
+            退出
+          </button>
         </div>
-      </div>
-
-      {/* Filter preferences */}
-      <div className="card space-y-4">
-        <h2 className="text-sm font-semibold text-[var(--muted)]">筛选偏好</h2>
-
-        <FilterGroup label="关注省份">
-          <div className="flex flex-wrap gap-1.5">
-            {PROVINCES.map(p => (
-              <ChipBtn
-                key={p}
-                active={filters.provinces.includes(p)}
-                onClick={() => toggleArrayFilter('provinces', p)}
-              >{p}</ChipBtn>
-            ))}
-          </div>
-        </FilterGroup>
-
-        <FilterGroup label="学历要求">
-          <div className="flex flex-wrap gap-1.5">
-            {EDUCATION_LEVELS.map(e => (
-              <ChipBtn
-                key={e}
-                active={filters.education.includes(e)}
-                onClick={() => toggleArrayFilter('education', e)}
-              >{e}</ChipBtn>
-            ))}
-          </div>
-        </FilterGroup>
-
-        <FilterGroup label="办学性质">
-          <div className="flex flex-wrap gap-1.5">
-            {UNIVERSITY_TYPES.map(t => (
-              <ChipBtn
-                key={t}
-                active={filters.university_types.includes(t)}
-                onClick={() => toggleArrayFilter('university_types', t)}
-              >{t}</ChipBtn>
-            ))}
-          </div>
-        </FilterGroup>
-
-        <FilterGroup label="院校层次">
-          <div className="flex flex-wrap gap-1.5">
-            {UNIVERSITY_LEVELS.map(l => (
-              <ChipBtn
-                key={l}
-                active={filters.university_levels.includes(l)}
-                onClick={() => toggleArrayFilter('university_levels', l)}
-              >{l}</ChipBtn>
-            ))}
-          </div>
-        </FilterGroup>
-
-        <FilterGroup label="聘用方式">
-          <div className="flex flex-wrap gap-1.5">
-            {COOPERATION_TYPES.map(c => (
-              <ChipBtn
-                key={c}
-                active={filters.cooperation_types.includes(c)}
-                onClick={() => toggleArrayFilter('cooperation_types', c)}
-              >{c}</ChipBtn>
-            ))}
-          </div>
-        </FilterGroup>
-      </div>
-
-      {/* Notification preferences */}
-      <div className="card space-y-3">
-        <h2 className="text-sm font-semibold text-[var(--muted)]">通知设置</h2>
-
-        <label className="flex items-center justify-between text-sm">
-          <div className="flex items-center gap-2">
-            <Mail size={14} className="text-[var(--muted)]" />
-            邮件通知
-          </div>
-          <input
-            type="checkbox"
-            className="w-4 h-4 rounded"
-            checked={filters.notify_email}
-            onChange={e => setFilters({ ...filters, notify_email: e.target.checked })}
-          />
-        </label>
-
-        <label className="flex items-center justify-between text-sm">
-          <div className="flex items-center gap-2">
-            <Bell size={14} className="text-[var(--muted)]" />
-            站内通知
-          </div>
-          <input
-            type="checkbox"
-            className="w-4 h-4 rounded"
-            checked={filters.notify_in_app}
-            onChange={e => setFilters({ ...filters, notify_in_app: e.target.checked })}
-          />
-        </label>
-      </div>
-
-      {/* Save & Logout */}
-      <div className="flex items-center gap-2">
-        <button className="btn btn-primary flex-1" onClick={saveFilters} disabled={saving}>
-          {saving ? (
-            <RefreshCw size={14} className="animate-spin" />
-          ) : (
-            <Save size={14} />
-          )}
-          {saving ? '保存中...' : saved ? '已保存' : '保存设置'}
-        </button>
-        <button className="btn btn-secondary" onClick={handleLogout}>
-          <LogOut size={14} />
-          退出
-        </button>
       </div>
     </div>
   );

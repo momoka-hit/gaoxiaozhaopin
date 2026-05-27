@@ -39,63 +39,68 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
-      <div className="w-full max-w-sm">
-        <div className="text-center mb-8">
-          <h1 className="text-2xl font-bold text-[var(--primary)]">高校招聘通</h1>
-          <p className="text-[var(--muted)] mt-1 text-sm">高校行政辅导员招聘信息平台</p>
+    <div className="min-h-screen flex flex-col">
+      {/* Gradient header */}
+      <div className="bg-gradient-to-br from-indigo-600 to-indigo-800 text-white">
+        <div className="container-main py-12 pb-16 text-center">
+          <h1 className="text-2xl font-bold tracking-tight">高校招聘通</h1>
+          <p className="text-indigo-200 text-sm mt-1">高校行政辅导员招聘信息平台</p>
         </div>
+      </div>
 
-        <form onSubmit={handleLogin} className="card space-y-4">
-          <h2 className="text-lg font-semibold">登录</h2>
+      <div className="container-main -mt-8 relative z-10">
+        <div className="w-full max-w-sm mx-auto">
+          <form onSubmit={handleLogin} className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 space-y-4">
+            <h2 className="text-lg font-semibold text-gray-800">登录</h2>
 
-          {error && (
-            <div className="flex items-center gap-2 text-sm text-red-600 bg-red-50 px-3 py-2 rounded-lg">
-              <AlertCircle size={14} />
-              {error}
-            </div>
-          )}
-
-          <div>
-            <label className="block text-sm font-medium mb-1">邮箱</label>
-            <input
-              type="email"
-              className="input"
-              placeholder="请输入邮箱"
-              value={email}
-              onChange={e => setEmail(e.target.value)}
-              required
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium mb-1">密码</label>
-            <input
-              type="password"
-              className="input"
-              placeholder="请输入密码"
-              value={password}
-              onChange={e => setPassword(e.target.value)}
-              required
-            />
-          </div>
-
-          <button type="submit" className="btn btn-primary w-full" disabled={loading}>
-            {loading ? (
-              <span className="animate-spin inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full" />
-            ) : (
-              <LogIn size={16} />
+            {error && (
+              <div className="flex items-center gap-2 text-sm text-red-600 bg-red-50 px-3 py-2 rounded-lg">
+                <AlertCircle size={14} />
+                {error}
+              </div>
             )}
-            {loading ? '登录中...' : '登录'}
-          </button>
 
-          <p className="text-sm text-center text-[var(--muted)]">
-            还没有账号？
-            <Link href="/register" className="text-[var(--primary)] hover:underline ml-1">
-              使用邀请码注册
-            </Link>
-          </p>
-        </form>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">邮箱</label>
+              <input
+                type="email"
+                className="input"
+                placeholder="请输入邮箱"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                required
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">密码</label>
+              <input
+                type="password"
+                className="input"
+                placeholder="请输入密码"
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+                required
+              />
+            </div>
+
+            <button type="submit" className="btn btn-primary w-full" disabled={loading}>
+              {loading ? (
+                <span className="animate-spin inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full" />
+              ) : (
+                <LogIn size={16} />
+              )}
+              {loading ? '登录中...' : '登录'}
+            </button>
+
+            <p className="text-sm text-center text-gray-400">
+              还没有账号？
+              <Link href="/register" className="text-indigo-600 hover:text-indigo-800 font-medium ml-1">
+                使用邀请码注册
+              </Link>
+            </p>
+          </form>
+        </div>
       </div>
     </div>
   );
