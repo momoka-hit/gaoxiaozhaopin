@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase/client';
-import { createAdminClient } from '@/lib/supabase/admin';
 import { UserPlus, AlertCircle, CheckCircle } from 'lucide-react';
 
 export default function RegisterPage() {
@@ -30,7 +29,7 @@ export default function RegisterPage() {
       .single();
 
     if (err || !data) {
-      setError('邀请码无效');
+      setError('邀请码无效，请检查后重试');
       setLoading(false);
       return;
     }
@@ -88,12 +87,17 @@ export default function RegisterPage() {
       return;
     }
 
-    // Mark invite code as used
-    const adminClient = createAdminClient();
-    await adminClient
-      .from('invite_codes')
-      .update({ used_by: authData.user.id, used_at: new Date().toISOString() })
-      .eq('code', inviteCode.trim());
+    // Mark invite code as used via server API
+    const res = await fetch('/api/invite/use', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ code: inviteCode.trim(), userId: authData.user.id }),
+    });
+
+    if (!res.ok) {
+      // Don't block registration if marking fails
+      console.error('Failed to mark invite code as used');
+    }
 
     // Update profile nickname
     if (nickname) {
@@ -133,7 +137,7 @@ export default function RegisterPage() {
                 className="input text-center text-lg tracking-widest"
                 placeholder="请输入邀请码"
                 value={inviteCode}
-                onChange={e => setInviteCode(e.target.value)}
+                onChange={e => setInviteCode(e.target.value.toUpperCase())}
                 required
               />
             </div>
