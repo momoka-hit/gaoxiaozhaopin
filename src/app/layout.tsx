@@ -14,7 +14,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="zh-CN" className="h-full">
-      <body className="min-h-full" style={{ fontFamily: "Microsoft YaHei, PingFang SC, Noto Sans SC, system-ui, sans-serif" }}>
+      <body className="min-h-full font-sans">
         <AuthProvider>{children}</AuthProvider>
       </body>
     </html>
