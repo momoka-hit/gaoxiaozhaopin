@@ -37,12 +37,14 @@
   --color-text-secondary: var(--text-secondary);
   --color-primary: var(--primary);
   --color-border: var(--border);
-  --font-sans: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", system-ui, -apple-system, sans-serif;
+  --font-sans: var(--font-noto, "PingFang SC"), "Microsoft YaHei", "Noto Sans SC", system-ui, -apple-system, sans-serif;
+  --default-font-family: var(--font-sans);
 }
 
 body {
   background: var(--bg);
   color: var(--text);
+  font-family: var(--font-noto, "PingFang SC"), "Microsoft YaHei", "Noto Sans SC", system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
