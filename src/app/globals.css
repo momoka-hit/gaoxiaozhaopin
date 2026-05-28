@@ -24,6 +24,9 @@
   --radius-sm: 8px;
   --radius-full: 9999px;
 
+  /* Font stack */
+  --font-sans: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", system-ui, -apple-system, sans-serif;
+
   /* Legacy aliases */
   --foreground: var(--text);
   --muted: var(--text-secondary);
