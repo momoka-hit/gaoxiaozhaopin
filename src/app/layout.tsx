@@ -1,13 +1,6 @@
 import type { Metadata } from "next";
-import { Noto_Sans_SC } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/components/layout/AuthProvider";
-
-const notoSansSC = Noto_Sans_SC({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  display: "swap",
-});
 
 export const metadata: Metadata = {
   title: "高校招聘通 - 高校行政辅导员招聘信息平台",
@@ -21,7 +14,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="zh-CN" className="h-full">
-      <body className={`min-h-full ${notoSansSC.className}`}>
+      <body className="min-h-full" style={{ fontFamily: "Microsoft YaHei, PingFang SC, Noto Sans SC, system-ui, sans-serif" }}>
         <AuthProvider>{children}</AuthProvider>
       </body>
     </html>
