@@ -1,7 +1,9 @@
 import axios from 'axios';
 import * as cheerio from 'cheerio';
+import iconv from 'iconv-lite';
 import { CrawlSource, HR_URLS } from './index';
 import { RawRecruitment } from '../supabase';
+import { detectEncoding, decodeBody } from './encoding';
 
 const TIMEOUT = 30000;
 
@@ -14,6 +16,7 @@ async function crawlProvinceSites(): Promise<RawRecruitment[]> {
         console.log(`Crawling: ${site.name} (${site.url})`);
         const resp = await axios.get(site.url, {
           timeout: TIMEOUT,
+          responseType: 'arraybuffer',
           headers: {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
             'Accept': 'text/html,application/xhtml+xml',
@@ -21,7 +24,8 @@ async function crawlProvinceSites(): Promise<RawRecruitment[]> {
           },
         });
 
-        const $ = cheerio.load(resp.data);
+        const html = decodeBody(resp.data, resp.headers['content-type']);
+        const $ = cheerio.load(html);
         const items = $([
           '.news-list li', '.list li', '.article-list li',
           '.tr_main tr', 'ul li', 'table tr',

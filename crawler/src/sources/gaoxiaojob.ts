@@ -2,6 +2,7 @@ import axios from 'axios';
 import * as cheerio from 'cheerio';
 import { CrawlSource } from './index';
 import { RawRecruitment } from '../supabase';
+import { decodeBody } from './encoding';
 
 const BASE_URL = 'https://www.gaoxiaojob.com';
 const TIMEOUT = 30000;
@@ -20,6 +21,7 @@ async function crawlListings(): Promise<RawRecruitment[]> {
       console.log(`Crawling: ${BASE_URL}${cat.path}`);
       const resp = await axios.get(`${BASE_URL}${cat.path}`, {
         timeout: TIMEOUT,
+        responseType: 'arraybuffer',
         headers: {
           'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
           'Accept': 'text/html,application/xhtml+xml',
@@ -27,7 +29,8 @@ async function crawlListings(): Promise<RawRecruitment[]> {
         },
       });
 
-      const $ = cheerio.load(resp.data);
+      const html = decodeBody(resp.data, resp.headers['content-type']);
+      const $ = cheerio.load(html);
 
       // Try multiple possible listing selectors
       const items = $([

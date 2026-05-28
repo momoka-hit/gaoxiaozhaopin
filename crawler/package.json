@@ -9,7 +9,8 @@
   "dependencies": {
     "@supabase/supabase-js": "^2.106.2",
     "axios": "^1.16.1",
-    "cheerio": "^1.2.0"
+    "cheerio": "^1.2.0",
+    "iconv-lite": "^0.7.2"
   },
   "devDependencies": {
     "resend": "^6.12.4",
