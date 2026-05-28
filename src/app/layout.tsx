@@ -13,8 +13,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="zh-CN" className="h-full" style={{fontFamily: "PingFang SC, Microsoft YaHei, SimSun, sans-serif"}}>
-      <body className="min-h-full" style={{fontFamily: "PingFang SC, Microsoft YaHei, SimSun, sans-serif"}}>
+    <html lang="zh-CN" className="h-full" style={{fontFamily: '"PingFang SC","Microsoft YaHei",SimSun,sans-serif'}}>
+      <body className="min-h-full" style={{fontFamily: '"PingFang SC","Microsoft YaHei",SimSun,sans-serif'}}>
         <link rel="stylesheet" href="/fonts.css" />
         <AuthProvider>{children}</AuthProvider>
       </body>
