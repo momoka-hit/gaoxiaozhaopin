@@ -24,7 +24,8 @@ async function crawlProvinceSites(): Promise<RawRecruitment[]> {
           },
         });
 
-        const html = decodeBody(resp.data, resp.headers['content-type']);
+        const ct = resp.headers['content-type'];
+        const html = decodeBody(resp.data, typeof ct === 'string' ? ct : undefined);
         const $ = cheerio.load(html);
         const items = $([
           '.news-list li', '.list li', '.article-list li',

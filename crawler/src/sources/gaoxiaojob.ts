@@ -29,7 +29,8 @@ async function crawlListings(): Promise<RawRecruitment[]> {
         },
       });
 
-      const html = decodeBody(resp.data, resp.headers['content-type']);
+      const ct = resp.headers['content-type'];
+      const html = decodeBody(resp.data, typeof ct === 'string' ? ct : undefined);
       const $ = cheerio.load(html);
 
       // Try multiple possible listing selectors
